@@ -197,7 +197,7 @@ export default function EnhancedTable() {
     };
 
     const handleClick = (event, name) => {
-        window.open('#', '_blank'); window.open(`https://marketplace.plantvsundead.com/farm/other/${name}`, '_self');
+        window.open("#","_blank"); window.open(`https://marketplace.plantvsundead.com/farm/other/${name}`, '_self');
     };
 
     const handleChangePage = (event, newPage) => {
