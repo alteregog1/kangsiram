@@ -1,8 +1,10 @@
 <script>
 	import { landContract, plantContract } from "./lib/readData.js";
 	import { Form, FormGroup, Input, Card , Button, Table, Container, Col, Row } from "sveltestrap";
+	import {onMount} from "svelte"
 
-	
+	let currentRow;
+
 	const fetchAddress = (async () => {
 		const response = await fetch(API)
     	return await response.json()
@@ -17,8 +19,33 @@
 				return res;
 			});
 	}
-
 	
+	let startRowFilter
+	let endRowFilter
+
+	function highlightRow(row){
+		document.getElementById(row).classList.add("highlight")
+		console.log(document.getElementById(row))
+	}
+	
+	function filter(){
+		let rows = document.getElementsByTagName("tr")
+
+		for (var i=1, max=rows.length; i < max; i++) {
+			let rowNumber = parseInt(rows[i].children[0].innerText)
+			if(rowNumber < startRowFilter){
+				rows[i].style.display = "none"
+			}else if(rowNumber > endRowFilter){
+				rows[i].style.display = "none"
+			}else{
+				
+				rows[i].style.removeProperty("display")
+			}
+			
+		}
+	}
+
+
 </script>
 
 <svelte:head>
@@ -37,14 +64,14 @@
 					<Col>
 						<Form>
 							<FormGroup>
-								<Input value="" placeholder="Start Dari"/>
+								<Input on:change="{filter}" bind:value="{startRowFilter}" placeholder="Start Dari"/>
 							</FormGroup>
 						</Form>
 					</Col>
 					<Col>
 						<Form>
 							<FormGroup>
-								<Input value="" placeholder="Sampai"/>
+								<Input  on:change="{filter}" bind:value="{endRowFilter}"  placeholder="Sampai"/>
 							</FormGroup>
 						</Form>
 					</Col>
@@ -64,12 +91,12 @@
 						<p>...waiting</p>
 						{:then datas}
 							{#each datas as { address, coordinate }, i}
-								<tr>
+								<tr id="row-{i+1}">
 									<th scope="row">{i + 1}</th>
 									<td><h3><Button class="clip" outline data-clipboard-text={coordinate}>📋</Button>{coordinate}</h3></td>
 									<td>
 										<h3><Button class="clip" outline data-clipboard-text="https://marketplace.plantvsundead.com/farm/other/{address}">📋</Button>
-										<a class="blue" href="https://marketplace.plantvsundead.com/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
+										<a on:click="{() => highlightRow("row-"+(i+1))}" class="blue" href="https://marketplace.plantvsundead.com/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
 									</td>
 									{#await getTotalPlant(address)}
 										<td><h3>...</h3></td>
@@ -90,7 +117,3 @@
 	</Row>
 </Container>
 
-<style>
-	.onClicked  		   { background-color: pink; }
-	.notClicked 		   { background-color: none; }
-</style>
