@@ -1,16 +1,13 @@
 <script>
 	import { landContract, plantContract } from "./lib/readData.js";
-	// const Web3 = require('web3');
-	import { addresses } from "./lib/data.js";
 	import { Form, FormGroup, Input, Card , Button, Table, Container, Col, Row } from "sveltestrap";
 
-	function toggleClass(el, className) {
-		if (el.class.indexOf(className) > 0) {
-			el.className = el.className.replace(className, "");
-		} else {
-			el.className += className;
-		}
-	}
+	
+	const fetchAddress = (async () => {
+		const response = await fetch(API)
+    	return await response.json()
+	})()
+
 
 	async function getTotalPlant(address) {
 		return await plantContract.methods
@@ -40,14 +37,14 @@
 					<Col>
 						<Form>
 							<FormGroup>
-								<Input value="" placeholder="Start Filter"/>
+								<Input value="" placeholder="Start Dari"/>
 							</FormGroup>
 						</Form>
 					</Col>
 					<Col>
 						<Form>
 							<FormGroup>
-								<Input value="" placeholder="End Filter"/>
+								<Input value="" placeholder="Sampai"/>
 							</FormGroup>
 						</Form>
 					</Col>
@@ -63,21 +60,28 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each addresses as { address, coordinate }, i}
-							<tr>
-								<th scope="row">{i + 1}</th>
-								<td><h3><Button class="clip" outline data-clipboard-text={coordinate}>📋</Button>{coordinate}</h3></td>
-								<td>
-									<h3><Button class="clip" outline data-clipboard-text="https://marketplace.plantvsundead.com/farm/other/{address}">📋</Button>
-									<a class="blue" href="https://marketplace.plantvsundead.com/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
-								</td>
-								{#await getTotalPlant(address)}
-									<td><h3>...</h3></td>
-								{:then res}
-									<td	td><h3>{res}🌱</h3></td>
-								{/await}
-							</tr>
-						{/each}
+						{#await fetchAddress}
+						<p>...waiting</p>
+						{:then datas}
+							{#each datas as { address, coordinate }, i}
+								<tr>
+									<th scope="row">{i + 1}</th>
+									<td><h3><Button class="clip" outline data-clipboard-text={coordinate}>📋</Button>{coordinate}</h3></td>
+									<td>
+										<h3><Button class="clip" outline data-clipboard-text="https://marketplace.plantvsundead.com/farm/other/{address}">📋</Button>
+										<a class="blue" href="https://marketplace.plantvsundead.com/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
+									</td>
+									{#await getTotalPlant(address)}
+										<td><h3>...</h3></td>
+									{:then res}
+										<td	td><h3>{res}🌱</h3></td>
+									{/await}
+								</tr>
+							{/each}
+						{:catch error}
+						<p>Error Pak!</p>
+						{/await}
+						
 					</tbody>
 				</Table>
 				</Row>
