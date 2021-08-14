@@ -1,6 +1,6 @@
 <script>
 	import { landContract, plantContract } from "./lib/readData.js";
-	import { Form, FormGroup, Input, Card , Button, Table, Container, Col, Row } from "sveltestrap";
+	import { Form, FormGroup, Input, Card , Button, Table, Container, Col, Row, CardHeader, CardBody, CardFooter, CardTitle } from "sveltestrap";
 	import {onMount} from "svelte"
 
 	let currentRow;
@@ -25,7 +25,6 @@
 
 	function highlightRow(row){
 		document.getElementById(row).classList.add("highlight")
-		console.log(document.getElementById(row))
 	}
 	
 	function filter(){
@@ -57,6 +56,26 @@
 </svelte:head>
 
 <Container>
+	<Row class="mb-2">
+		<Col>
+			<Card>
+				<CardHeader>
+					<CardTitle>Tips</CardTitle>
+				</CardHeader>
+				<CardBody>
+					<p>
+						User Desktop, <b>Ctrl + Klik Kiri</b> di link / <b>Middle klik</b> di link biar bisa new tab.
+					</p>
+					<p>
+						silahkan pakai <b>filter</b> buat filtering start row sama max row di addressnya
+					</p>
+				</CardBody>				
+				<CardFooter > 
+					<p>🎁 Support This Project : <a href="https://bscscan.com/address/0xede11088f435e293574fe87ac254004f0c7a41aa" target="_blank">0xede11088f435e293574fe87ac254004f0c7a41aa</a></p>
+				</CardFooter>
+			</Card>
+		</Col>
+	</Row>
 	<Row>
 		<Col>
 			<Card body>
