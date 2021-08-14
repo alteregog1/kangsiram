@@ -114,8 +114,8 @@
 									<th scope="row">{i + 1}</th>
 									<td><h3><Button class="clip" outline data-clipboard-text={coordinate}>📋</Button>{coordinate}</h3></td>
 									<td>
-										<h3><Button class="clip" outline data-clipboard-text="https://marketplace.plantvsundead.com/farm/other/{address}">📋</Button>
-										<a on:click="{() => highlightRow("row-"+(i+1))}" class="blue" href="https://marketplace.plantvsundead.com/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
+										<h3><Button class="clip" outline data-clipboard-text="https://marketplace.plantvsundead.com/#/farm/other/{address}">📋</Button>
+										<a on:click="{() => highlightRow("row-"+(i+1))}" class="blue" href="https://marketplace.plantvsundead.com/#/farm/other/{address}" target="_blank">{address.substring(0,15)}...</a></h3>
 									</td>
 									{#await getTotalPlant(address)}
 										<td><h3>...</h3></td>
